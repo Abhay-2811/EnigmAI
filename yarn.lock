@@ -56,6 +56,11 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.57.0.tgz#a5417ae8427873f1dd08b70b3574b453e67b5f7f"
   integrity sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==
 
+"@fleekxyz/sdk@^0.7.3":
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/@fleekxyz/sdk/-/sdk-0.7.3.tgz#dae628d9a6bed8f46582151ca6aa9464648adce6"
+  integrity sha512-iYaKOltqXLKBbg0HRlnQrPIlnzgesSz4PwWFOErE/Ygu+D93WN7owxvjgyK5JbsylLp4wDpgdsFVCM0Ql0/bAg==
+
 "@humanwhocodes/config-array@^0.11.14":
   version "0.11.14"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.11.14.tgz#d78e481a039f7566ecc9660b4ea7fe6b1fec442b"
