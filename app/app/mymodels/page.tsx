@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import type { org } from "@/tyoes/globalTypes.types";
+import type { org } from "@/types/globalTypes.types";
+import CreateModelForm from "@/components/CreateModelForm";
 
 const org_data: org[] = [
   {
@@ -8,28 +9,40 @@ const org_data: org[] = [
     org_name: "OrgA",
     description: "CNN model with expected accuracy 90.3%",
     isTrained: false,
-    contributors: ['0x2014d78892fC9fFBc1D26a6269069C59c50fD481','0x2014d78892fC9fFBc1D26a6269069C59c50fD481']
+    contributors: [
+      "0x2014d78892fC9fFBc1D26a6269069C59c50fD481",
+      "0x2014d78892fC9fFBc1D26a6269069C59c50fD481",
+    ],
   },
   {
     org_add: "0x2014d78892fC9fFBc1D26a6269069C59c50fD481",
     org_name: "OrgB",
     description: "CNN model with expected accuracy 90.3%",
     isTrained: false,
-    contributors: ['0x2014d78892fC9fFBc1D26a6269069C59c50fD481','0x2014d78892fC9fFBc1D26a6269069C59c50fD481']
+    contributors: [
+      "0x2014d78892fC9fFBc1D26a6269069C59c50fD481",
+      "0x2014d78892fC9fFBc1D26a6269069C59c50fD481",
+    ],
   },
   {
     org_add: "0x2014d78892fC9fFBc1D26a6269069C59c50fD481",
     org_name: "OrgC",
     description: "CNN model with expected accuracy 90.3%",
     isTrained: false,
-    contributors: ['0x2014d78892fC9fFBc1D26a6269069C59c50fD481','0x2014d78892fC9fFBc1D26a6269069C59c50fD481']
+    contributors: [
+      "0x2014d78892fC9fFBc1D26a6269069C59c50fD481",
+      "0x2014d78892fC9fFBc1D26a6269069C59c50fD481",
+    ],
   },
   {
     org_add: "0x2014d78892fC9fFBc1D26a6269069C59c50fD481",
     org_name: "OrgD",
     description: "CNN model with expected accuracy 90.3%",
     isTrained: false,
-    contributors: ['0x2014d78892fC9fFBc1D26a6269069C59c50fD481','0x2014d78892fC9fFBc1D26a6269069C59c50fD481']
+    contributors: [
+      "0x2014d78892fC9fFBc1D26a6269069C59c50fD481",
+      "0x2014d78892fC9fFBc1D26a6269069C59c50fD481",
+    ],
   },
 ];
 
@@ -37,7 +50,11 @@ const MyModels = () => {
   const [toggleCreate, setToggleCreate] = useState<Boolean>(false);
 
   if (toggleCreate) {
-    return <div>Create Form</div>;
+    return (
+      <div>
+        <CreateModelForm />
+      </div>
+    );
   }
   return (
     <div

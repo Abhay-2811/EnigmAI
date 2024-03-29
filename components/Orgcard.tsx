@@ -1,5 +1,5 @@
 import React from "react";
-import type { org } from "@/tyoes/globalTypes.types";
+import type { org } from "@/types/globalTypes.types";
 
 const OrgCard: React.FC<{ org_data: org }> = ({ org_data }) => {
   return (

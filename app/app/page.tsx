@@ -2,7 +2,7 @@
 
 import OrgCard from "@/components/Orgcard";
 import React from "react";
-import type { org } from "@/tyoes/globalTypes.types";
+import type { org } from "@/types/globalTypes.types";
 
 const org_data: org[] = [
   {
