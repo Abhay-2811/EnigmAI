@@ -1,7 +1,7 @@
 import { Database } from "@tableland/sdk";
 import { publicClient, get_pk_walletClient } from "./viemClient";
 import type { Signer } from "ethers";
-import { org } from "@/types/globalTypes.types";
+import { org, userStorage } from "@/types/globalTypes.types";
 
 const signer = get_pk_walletClient();
 const db = new Database({ signer });
@@ -17,19 +17,70 @@ export const createTable = async (tableName: string, fields: string) => {
   return create.txn!.name;
 };
 
-// org: id integer primary key, org_name text, org_add text, description text,isTrained integer, contributors text
+// org [org_314159_818]: id integer primary key, org_name text, org_add text, description text,isTrained integer, contributors text
+//Contributors [Contributors_314159_830]: address text primary key, cids text
 export const addOrg = async (data: org) => {
   const { meta: insert } = await db
     .prepare(
       `INSERT INTO org_314159_818 (org_name, org_add, description, isTrained, contributors) VALUES (?, ?, ?, ?, ?);`
     )
-    .bind(data.org_name, data.org_add, data.description, data.isTrained, data.contributors)
+    .bind(
+      data.org_name,
+      data.org_add,
+      data.description,
+      Number(data.isTrained),
+      Array(data.contributors).toString()
+    )
     .run();
-  const hash = insert.txn!.transactionHash as `0x${string}` ;
+  const hash = insert.txn!.transactionHash as `0x${string}`;
   await publicClient.waitForTransactionReceipt({ hash });
   console.log("Added to Org data");
 };
 
+export const addContributor = async (data: userStorage) => {
+  const { meta: insert } = await db
+    .prepare(
+      `INSERT INTO Contributors_314159_830 (address, cids) VALUES (?, ?)`
+    )
+    .bind(data.address, data.cids.toString())
+    .run();
+  const hash = insert.txn!.transactionHash as `0x${string}`;
+  await publicClient.waitForTransactionReceipt({ hash });
+  console.log("Added to Contributors");
+};
+
+export const contributorExists = async (address: `0x${string}`) => {
+  const { results } = await db
+    .prepare(`SELECT * FROM Contributors_314159_830 WHERE address=?`)
+    .bind(address)
+    .run();
+  if (results.length == 0) {
+    return false;
+  }
+  return true;
+};
+
+export const getCid = async (address: `0x${string}`) => {
+  const { results } = await db
+    .prepare(`SELECT * FROM Contributors_314159_830 WHERE address=?`)
+    .bind(address)
+    .run();
+  const cids = results[0].cids as string;
+  return cids.split(",").filter((elm) => elm);
+};
+
+export const updateCids = async (address: `0x${string}`, newCids: string[]) => {
+  const prevCid = await getCid(address);
+  const data = [...prevCid, ...newCids];
+  console.log(data);
+  const { meta: update } = await db
+    .prepare("UPDATE Contributors_314159_830 SET cids=? WHERE address=?")
+    .bind(data.toString(), address)
+    .run();
+  const hash = update.txn!.transactionHash as `0x${string}`;
+  await publicClient.waitForTransactionReceipt({ hash });
+  console.log("Updated Cids");
+};
 /* 
 dao data (dao_data_314159_337 ): 
 id integer primary key, org_name text, owner_add text, description text,reward integer, pages integer, contract_add text

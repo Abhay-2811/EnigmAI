@@ -4,11 +4,24 @@ import { RadioGroup, Radio } from "@nextui-org/radio";
 import { Select, SelectSection, SelectItem } from "@nextui-org/select";
 import { org } from "@/types/globalTypes.types";
 import { addOrg, createTable } from "@/utils/tableland";
+import { WalletClient } from "viem";
+import { useWalletClient } from "wagmi";
+import { filecoinCalibration } from "viem/chains";
+import { deployOrgContract } from "@/utils/viemClient";
 
 const model_options = ["Stable Diffusion Dreambooth"];
 
 const CreateModelForm = () => {
   const [radioSelect, setRadioSelect] = useState<Boolean>(false);
+
+  let wc: WalletClient | undefined;
+
+  if (typeof window !== "undefined") {
+    const { data: walletClient } = useWalletClient({
+      chainId: filecoinCalibration.id,
+    });
+    wc = walletClient;
+  }
   const onSelectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
     if (e.target.value == "pre-trained") {
@@ -36,6 +49,7 @@ const CreateModelForm = () => {
 
   const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // const contractAddress = deployOrgContract(formData.org_name, for)
     await addOrg(formData);
   };
 

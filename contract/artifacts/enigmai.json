@@ -1,4 +1,5 @@
 {
+    "contractAddress": "0x96aF61b17869b827c70926EC8a74162e66DC5B0D",
     "abi": [{
             "inputs": [],
             "stateMutability": "nonpayable",

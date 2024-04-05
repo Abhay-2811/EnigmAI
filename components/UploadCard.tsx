@@ -1,30 +1,28 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import lighthouse from "@lighthouse-web3/sdk";
+import { updateCids } from "@/utils/tableland";
+import { useAccount } from "wagmi";
 
 const UploadCard = () => {
-  const [uploading, setuploading] = useState<boolean>(false);
+  const { address } = useAccount();
   const lh_apikey = process.env.NEXT_PUBLIC_LH_API_KEY as string;
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    setuploading((oldVal) => !oldVal);
-    console.log(uploading);
+
     if (e.target.files?.length == 0) {
       return;
     }
     const _files = Array.from(e.target.files!);
 
     const cids: string[] = [];
-
-    console.log(_files);
     _files.forEach(async (file) => {
       const { data } = await lighthouse.uploadBuffer(file, lh_apikey);
       cids.push(data.Hash);
     });
-    console.log(cids);
-    console.log(uploading);
-    setuploading((oldVal) => !oldVal);
+
+    await updateCids(address!, cids);
   };
   return (
     <div className="flex items-center justify-center w-full">
@@ -33,9 +31,7 @@ const UploadCard = () => {
         className="flex flex-col items-center justify-center w-full h-64 border-2 p-4  border-dashed rounded-lg cursor-pointer bg-inherit  border-gray-600 hover:border-gray-500 hover:bg-gray-900"
       >
         <div className="flex flex-col items-center justify-center pt-5 pb-6">
-          {uploading ? (
-            <></>
-          ) : (
+          {
             <>
               {" "}
               <svg
@@ -61,14 +57,13 @@ const UploadCard = () => {
                 PNG & JPG (SIZE 5000x5000)
               </p>
             </>
-          )}
+          }
         </div>
         <input
           id="dropzone-file"
           type="file"
           className="hidden"
           onChange={handleUpload}
-          disabled={uploading}
           multiple
         />
       </label>

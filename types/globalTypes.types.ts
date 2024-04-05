@@ -5,7 +5,7 @@ export type org = {
   description: string;
   isTrained: boolean;
   contributors: string[];
-
+  
 };
 
 export type userStorage = {
