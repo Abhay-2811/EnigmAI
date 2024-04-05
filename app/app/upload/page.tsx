@@ -1,9 +1,12 @@
-import React from 'react'
+import UploadCard from "@/components/UploadCard";
+import React from "react";
 
-const page = () => {
+const Upload = () => {
   return (
-    <div>page</div>
-  )
-}
+    <div className="grid grid-cols-4 gap-4">
+      <UploadCard />
+    </div>
+  );
+};
 
-export default page
+export default Upload;

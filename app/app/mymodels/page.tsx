@@ -3,48 +3,6 @@ import React, { useState } from "react";
 import type { org } from "@/types/globalTypes.types";
 import CreateModelForm from "@/components/CreateModelForm";
 
-const org_data: org[] = [
-  {
-    org_add: "0x2014d78892fC9fFBc1D26a6269069C59c50fD481",
-    org_name: "OrgA",
-    description: "CNN model with expected accuracy 90.3%",
-    isTrained: false,
-    contributors: [
-      "0x2014d78892fC9fFBc1D26a6269069C59c50fD481",
-      "0x2014d78892fC9fFBc1D26a6269069C59c50fD481",
-    ],
-  },
-  {
-    org_add: "0x2014d78892fC9fFBc1D26a6269069C59c50fD481",
-    org_name: "OrgB",
-    description: "CNN model with expected accuracy 90.3%",
-    isTrained: false,
-    contributors: [
-      "0x2014d78892fC9fFBc1D26a6269069C59c50fD481",
-      "0x2014d78892fC9fFBc1D26a6269069C59c50fD481",
-    ],
-  },
-  {
-    org_add: "0x2014d78892fC9fFBc1D26a6269069C59c50fD481",
-    org_name: "OrgC",
-    description: "CNN model with expected accuracy 90.3%",
-    isTrained: false,
-    contributors: [
-      "0x2014d78892fC9fFBc1D26a6269069C59c50fD481",
-      "0x2014d78892fC9fFBc1D26a6269069C59c50fD481",
-    ],
-  },
-  {
-    org_add: "0x2014d78892fC9fFBc1D26a6269069C59c50fD481",
-    org_name: "OrgD",
-    description: "CNN model with expected accuracy 90.3%",
-    isTrained: false,
-    contributors: [
-      "0x2014d78892fC9fFBc1D26a6269069C59c50fD481",
-      "0x2014d78892fC9fFBc1D26a6269069C59c50fD481",
-    ],
-  },
-];
 
 const MyModels = () => {
   const [toggleCreate, setToggleCreate] = useState<Boolean>(false);

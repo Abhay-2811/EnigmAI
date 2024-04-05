@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import { RadioGroup, Radio } from "@nextui-org/radio";
 import { Select, SelectSection, SelectItem } from "@nextui-org/select";
+import { org } from "@/types/globalTypes.types";
+import { addOrg, createTable } from "@/utils/tableland";
 
 const model_options = ["Stable Diffusion Dreambooth"];
 
@@ -13,8 +15,32 @@ const CreateModelForm = () => {
       setRadioSelect((pre_val) => !pre_val);
     }
   };
+  const [formData, setFormData] = useState<org>({
+    id: 0,
+    org_add: "",
+    org_name: "",
+    description: "",
+    isTrained: false,
+    contributors: [],
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const {
+      name,
+      value,
+    }: { name: string; value: string | boolean | string[] } = e.target;
+    setFormData((oldVal: org) => ({ ...oldVal, [name]: value }));
+  };
+
+  const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await addOrg(formData);
+  };
+
   return (
-    <form className="max-w-[90%] m-auto">
+    <form className="max-w-[90%] m-auto" onSubmit={submitForm}>
       <h1 className="text-xl my-10">
         Create Model Org For Accepting Contributions{" "}
       </h1>
@@ -25,6 +51,7 @@ const CreateModelForm = () => {
           id="org_name"
           className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
           placeholder=" "
+          onChange={handleChange}
           required
         />
         <label
@@ -41,7 +68,7 @@ const CreateModelForm = () => {
           className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
           placeholder=" "
           required
-          //   onChange={handleChange}
+          onChange={handleChange}
         />
         <label
           htmlFor="descdescription"
