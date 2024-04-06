@@ -1,5 +1,5 @@
 import { Database } from "@tableland/sdk";
-import { publicClient, get_pk_walletClient } from "./viemClient";
+import { publicClient, get_pk_walletClient } from "./contractInteractions";
 import type { Signer } from "ethers";
 import { org, userStorage } from "@/types/globalTypes.types";
 

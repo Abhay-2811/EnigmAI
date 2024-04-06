@@ -1,8 +1,9 @@
-import { WalletClient, createPublicClient, http, parseUnits } from "viem";
+import { WalletClient, createPublicClient, createWalletClient, http, parseUnits } from "viem";
 import { filecoinCalibration } from "viem/chains";
 import { Wallet, getDefaultProvider } from "ethers";
 import Org_contractData from "@/contract/artifacts/enigmai_org.json";
 import Token_contractData from "@/contract/artifacts/enigmai.json";
+import { privateKeyToAccount } from "viem/accounts";
 export const publicClient = createPublicClient({
   chain: filecoinCalibration,
   transport: http(),
@@ -16,6 +17,14 @@ export function get_pk_walletClient() {
   const signer = owner.connect(provider);
   return signer;
 }
+
+const account = privateKeyToAccount(process.env.NEXT_PUBLIC_PRIVATE_KEY as `0x${string}`)
+ 
+const viemWalletClient = createWalletClient({ 
+  account, 
+  chain: filecoinCalibration,
+  transport: http()
+})
 
 export async function deployOrgContract(
   org_name: string,
@@ -36,4 +45,16 @@ export async function deployOrgContract(
   });
   const receipt = await publicClient.waitForTransactionReceipt({ hash });
   return receipt.contractAddress;
+}
+
+
+export async function contract_commit_data(user_address: `0x${string}`, contract_address: `0x${string}`, data: string[]){
+    const hash = await viemWalletClient.writeContract({
+      address: contract_address,
+      abi: Org_contractData.abi,
+      functionName: "commitData",
+      args: [user_address, data.length]
+    });
+    const receipt = await publicClient.waitForTransactionReceipt({hash});
+    return receipt.transactionHash;
 }

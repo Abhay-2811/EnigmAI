@@ -7,7 +7,7 @@ import { addOrg, createTable } from "@/utils/tableland";
 import { WalletClient } from "viem";
 import { useWalletClient } from "wagmi";
 import { filecoinCalibration } from "viem/chains";
-import { deployOrgContract } from "@/utils/viemClient";
+import { deployOrgContract } from "@/utils/contractInteractions";
 
 const model_options = ["Stable Diffusion Dreambooth"];
 
