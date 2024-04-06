@@ -1,4 +1,11 @@
-import { WalletClient, createPublicClient, createWalletClient, http, parseUnits } from "viem";
+import {
+  WalletClient,
+  createPublicClient,
+  createWalletClient,
+  formatUnits,
+  http,
+  parseUnits,
+} from "viem";
 import { filecoinCalibration } from "viem/chains";
 import { Wallet, getDefaultProvider } from "ethers";
 import Org_contractData from "@/contract/artifacts/enigmai_org.json";
@@ -18,13 +25,15 @@ export function get_pk_walletClient() {
   return signer;
 }
 
-const account = privateKeyToAccount(process.env.NEXT_PUBLIC_PRIVATE_KEY as `0x${string}`)
- 
-const viemWalletClient = createWalletClient({ 
-  account, 
+const account = privateKeyToAccount(
+  process.env.NEXT_PUBLIC_PRIVATE_KEY as `0x${string}`
+);
+
+const viemWalletClient = createWalletClient({
+  account,
   chain: filecoinCalibration,
-  transport: http()
-})
+  transport: http(),
+});
 
 export async function deployOrgContract(
   org_name: string,
@@ -47,14 +56,27 @@ export async function deployOrgContract(
   return receipt.contractAddress;
 }
 
+export async function contract_commit_data(
+  user_address: `0x${string}`,
+  contract_address: `0x${string}`,
+  data: string[]
+) {
+  const hash = await viemWalletClient.writeContract({
+    address: contract_address,
+    abi: Org_contractData.abi,
+    functionName: "commitData",
+    args: [user_address, data.length],
+  });
+  const receipt = await publicClient.waitForTransactionReceipt({ hash });
+  return receipt.transactionHash;
+}
 
-export async function contract_commit_data(user_address: `0x${string}`, contract_address: `0x${string}`, data: string[]){
-    const hash = await viemWalletClient.writeContract({
-      address: contract_address,
-      abi: Org_contractData.abi,
-      functionName: "commitData",
-      args: [user_address, data.length]
-    });
-    const receipt = await publicClient.waitForTransactionReceipt({hash});
-    return receipt.transactionHash;
+export async function tokenbalance(address: `0x${string}`) {
+  const balance: string = (await publicClient.readContract({
+    address: Token_contractData.contractAddress as `0x${string}`,
+    abi: Token_contractData.abi,
+    functionName: "balanceOf",
+    args: [address],
+  })) as string;
+  return formatUnits(BigInt(balance), 18);
 }

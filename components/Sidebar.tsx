@@ -1,10 +1,14 @@
+
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "@/public/logo.svg";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount } from "wagmi";
+import BalanceComp from "./BalanceComp";
 
 const Sidebar = () => {
+  const {address, isConnected} = useAccount();
   const Sidebar_comps = [
     {
       title: "Contribute Data",
@@ -42,7 +46,8 @@ const Sidebar = () => {
           </div>
         ))}
       </div>
-      <div className=" justify-end">
+      <div className=" justify-end space-y-4">
+        {isConnected && <BalanceComp address={address!}/>}
         <ConnectButton showBalance={false} chainStatus={"none"} />
       </div>
     </div>

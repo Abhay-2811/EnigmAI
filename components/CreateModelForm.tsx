@@ -49,7 +49,7 @@ const CreateModelForm = () => {
 
   const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // const contractAddress = deployOrgContract(formData.org_name, for)
+    // const contractAddress = await deployOrgContract(formData.org_name, for)
     await addOrg(formData);
   };
 
