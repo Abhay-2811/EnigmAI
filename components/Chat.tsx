@@ -71,13 +71,11 @@ const Chat = ({ id, wc }: { id: number; wc: WalletClient }) => {
       ...oldmsgs,
       { sender: "user", text: inputValue },
     ]);
+    setInputValue("");
     const [response, tx] = await Promise.all([
       await query({ inputs: inputValue }),
       await creditUsage(orgData!.org_add as `0x${string}`, address!),
     ]);
-
-
-    setInputValue("");
     setImageLoading(false);
   };
 
@@ -92,58 +90,64 @@ const Chat = ({ id, wc }: { id: number; wc: WalletClient }) => {
   }
 
   return (
-    <div className="flex flex-col h-[70vh] justify-between bg-inherit p-4">
-      <div className="flex-1 overflow-hidden hover:overflow-y-auto h-[80%]">
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`flex ${
-              message.sender === "user" ? "justify-end" : "justify-start"
-            } mb-2`}
-          >
+    <>
+      <div className="flex flex-col h-[70vh] justify-between bg-inherit p-4">
+        <div className="flex-1 overflow-hidden hover:overflow-y-auto h-[80%]">
+          {messages.map((message, index) => (
             <div
-              className={`p-2 rounded-lg ${
-                message.sender === "user"
-                  ? "bg-blue-500 text-white"
-                  : "bg-green-300 text-black"
-              }`}
+              key={index}
+              className={`flex ${
+                message.sender === "user" ? "justify-end" : "justify-start"
+              } mb-2`}
             >
-              {message.sender === "user" ? (
-                message.text
-              ) : (
-                <img src={message.text} className="w-[300px]"></img>
-              )}
+              <div
+                className={`p-2 rounded-lg ${
+                  message.sender === "user"
+                    ? "bg-blue-500 text-white"
+                    : "bg-green-300 text-black"
+                }`}
+              >
+                {message.sender === "user" ? (
+                  message.text
+                ) : (
+                  <img src={message.text} className="w-[300px]"></img>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+        <div className="flex mt-4 space-x-2">
+          <input
+            type="text"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            placeholder="Type a message..."
+            className="flex-1 p-2 rounded-l-lg"
+          />
+          <button className="bg-blue-500 text-white p-2 rounded-r-lg">
+            {Number(credits)} credits
+          </button>
+          <button
+            onClick={handleBuyCr}
+            className="bg-blue-500 text-white p-2 rounded-r-lg"
+          >
+            Buy 10 cr for {(cpp ?? 0) * 10} $EAI
+          </button>
+          <button
+            onClick={handleMessageSend}
+            className="bg-blue-500 text-white p-2 rounded-r-lg"
+            type={"submit"}
+            disabled={imageLoading}
+          >
+            {imageLoading ? <CircularProgress size="sm" /> : "Send"}
+          </button>
+        </div>
       </div>
-      <div className="flex mt-4 space-x-2">
-        <input
-          type="text"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          placeholder="Type a message..."
-          className="flex-1 p-2 rounded-l-lg"
-        />
-        <button className="bg-blue-500 text-white p-2 rounded-r-lg">
-          {Number(credits)} credits
-        </button>
-        <button
-          onClick={handleBuyCr}
-          className="bg-blue-500 text-white p-2 rounded-r-lg"
-        >
-          Buy 10 cr for {(cpp ?? 0) * 10} $EAI
-        </button>
-        <button
-          onClick={handleMessageSend}
-          className="bg-blue-500 text-white p-2 rounded-r-lg"
-          type={"submit"}
-          disabled={imageLoading}
-        >
-          {imageLoading ? <CircularProgress size="sm" /> : "Send"}
-        </button>
-      </div>
-    </div>
+      <p className="mt-2">
+        Note: Computation has rate limit so, if response is empty image try
+        again after few seconds !!
+      </p>
+    </>
   );
 };
 

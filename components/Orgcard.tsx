@@ -102,23 +102,13 @@ const OrgCard: React.FC<{
 
       {type == "chat" && (
         <div className="flex">
-          <div>
-            <span>Cost Per Prompt:</span>
-            <Image
-              src="/enigmai-logo.svg"
-              width={30}
-              height={30}
-              alt="token logo"
-              className="bg-black rounded-full"
-            />
-            <div>{org_data.costPerPrompt} $EAI </div>
-          </div>
           <button className="relative mt-3 inline-flex items-center justify-center p-0.5 me-2 overflow-hidden text-sm font-medium  rounded-lg group bg-gradient-to-br from-green-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white text-white focus:ring-4 focus:outline-none focus:ring-blue-800">
             <span
               className="relative px-3 py-2.5 transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0"
               onClick={() => {}}
             >
               <Link href={`/app/chat/${org_data.id}`}>💬 Use Model</Link>
+             
             </span>
           </button>
         </div>
