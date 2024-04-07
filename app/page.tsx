@@ -12,7 +12,7 @@ export default function Home() {
           Sensible AI
         </h1>
         <div className=" text-2xl font-semibold mt-[10%] text-center ">
-          <h1>Whether you're a developer, artist or just an art enthusiast</h1>{" "}
+          <h1>Whether you&apos;re a developer, artist or just an art enthusiast</h1>{" "}
           <h1 className="mt-2"> Join the AI revolution !</h1>
           <Link href={"/app"}>
             <Button
