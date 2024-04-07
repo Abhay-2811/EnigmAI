@@ -49,7 +49,7 @@ const Chat = ({ id, wc }: { id: number; wc: WalletClient }) => {
       "https://api-inference.huggingface.co/models/sd-dreambooth-library/samuel-bankman",
       {
         headers: {
-          Authorization: "Bearer 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",
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_HF_TOKEN}`,
         },
         method: "POST",
         body: JSON.stringify(data),
@@ -67,12 +67,16 @@ const Chat = ({ id, wc }: { id: number; wc: WalletClient }) => {
       return;
     }
     setImageLoading(true);
-    const [response, tx] = await Promise.all([await query({ inputs: inputValue }), await creditUsage(orgData!.org_add as `0x${string}`, address!)])
     setMessages((oldmsgs) => [
       ...oldmsgs,
       { sender: "user", text: inputValue },
     ]);
-   
+    const [response, tx] = await Promise.all([
+      await query({ inputs: inputValue }),
+      await creditUsage(orgData!.org_add as `0x${string}`, address!),
+    ]);
+
+
     setInputValue("");
     setImageLoading(false);
   };

@@ -85,7 +85,7 @@ export const updateCids = async (address: `0x${string}`, newCids: string[]) => {
 
 export const updateContributions = async (id: number, newCids: string[]) => {
   const orgData = await getModelFilter(`id=${id}`);
-  const data = [...orgData[0].contributors, ...newCids];
+  const data = [...orgData[0].contributors.split(','), ...newCids];
   const { meta: update } = await db
     .prepare("UPDATE org_314159_818 SET contributors=? WHERE id=?")
     .bind(data.toString(), id)
