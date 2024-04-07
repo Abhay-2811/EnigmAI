@@ -1,36 +1,30 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# EnigmAI: The All-in-One Art, AI, and EAI Token Ecosystem
 
-## Getting Started
+## Addressing a Critical Issue
 
-First, run the development server:
+Many AI art models are trained on massive datasets of artwork, often without proper compensation for the artists whose creations are used. EnigmAI tackles this head-on by creating a fair and transparent system.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## The EnigmAI Advantage
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Decentralized Platform:** Empowering creators and developers with ownership and control.
+- **IPFS Storage:** Ensures the secure and permanent storage of artistic contributions.
+- **Tableland Database:** Provides a robust and scalable solution for managing information and state within the platform.
+- **$EAI Token Utility:** Drives the entire EnigmAI ecosystem.
+- **Artists Earn:** Get rewarded for their contributions used to train AI models.
+- **Developers Earn:** Benefit from a thriving marketplace for their AI creations.
+- **End Users:** Purchase prompt credits with $EAI to interact with AI models and generate unique artwork.
+- **Decentralised Compute: [In work]** Using bacalhau + docker jobs to deploy, containerise and compute over contributed data.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## The $EAI Cycle
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. **User Purchases:** End users acquire $EAI tokens to buy prompt credits for generating AI art.
+2. **Artist & Developer Compensation:** A portion of the $EAI spent goes towards rewarding artists and developers.
+3. **Sustainable Ecosystem:** This continuous cycle ensures all participants are fairly compensated, fostering a healthy and vibrant art-AI community.
 
-## Learn More
+## Built on Cutting-Edge Technology
 
-To learn more about Next.js, take a look at the following resources:
+EnigmAI leverages the power of cutting-edge technologies like Filecoin's InterPlanetary File System (IPFS) and Tableland to provide a secure, scalable, and efficient platform.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Join the EnigmAI revolution!
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Whether you're an artist, developer, or simply an art enthusiast, EnigmAI offers a unique and rewarding experience.
