@@ -22,9 +22,13 @@ const Sidebar = () => {
       title: "My Models",
       route: "/app/mymodels",
     },
+    {
+      title: 'Chat',
+      route: '/app/chat'
+    }
   ];
   return (
-    <div className="flex flex-col content-center items-center justify-between h-[80vh] p-[25px] w-[30vh] rounded-xl border-2 border-sky-200 hover:shadow-[0_0_2px_#fff,inset_0_0_2px_#fff,0_0_5px_#08f,0_0_15px_#08f,0_0_30px_#08f] text-center">
+    <div className="flex flex-col items-center justify-between h-[80vh] p-[25px] w-[30vh] rounded-xl border-2 border-sky-200 hover:shadow-[0_0_2px_#fff,inset_0_0_2px_#fff,0_0_5px_#08f,0_0_15px_#08f,0_0_30px_#08f] text-center">
       <div>
         {" "}
         <a href="/">

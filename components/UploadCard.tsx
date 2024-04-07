@@ -1,12 +1,14 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import lighthouse from "@lighthouse-web3/sdk";
 import { updateCids } from "@/utils/tableland";
 import { useAccount } from "wagmi";
+import { CircularProgress } from "@nextui-org/react";
 
 const UploadCard = () => {
   const { address } = useAccount();
   const lh_apikey = process.env.NEXT_PUBLIC_LH_API_KEY as string;
+  const [loading, setLoading] = useState<boolean>();
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -14,6 +16,7 @@ const UploadCard = () => {
     if (e.target.files?.length == 0) {
       return;
     }
+    setLoading(true);
     const _files = Array.from(e.target.files!);
 
     const cids: string[] = [];
@@ -23,6 +26,7 @@ const UploadCard = () => {
     });
 
     await updateCids(address!, cids);
+    setLoading(false);
   };
   return (
     <div className="flex items-center justify-center w-full">
@@ -30,8 +34,8 @@ const UploadCard = () => {
         htmlFor="dropzone-file"
         className="flex flex-col items-center justify-center w-full h-64 border-2 p-4  border-dashed rounded-lg cursor-pointer bg-inherit  border-gray-600 hover:border-gray-500 hover:bg-gray-900"
       >
-        <div className="flex flex-col items-center justify-center pt-5 pb-6">
-          {
+        { loading ? <CircularProgress size="lg" aria-label="loading..."/> : 
+          <div className="flex flex-col items-center justify-center pt-5 pb-6">
             <>
               {" "}
               <svg
@@ -57,8 +61,8 @@ const UploadCard = () => {
                 PNG & JPG (SIZE 5000x5000)
               </p>
             </>
-          }
-        </div>
+          </div>
+        }
         <input
           id="dropzone-file"
           type="file"

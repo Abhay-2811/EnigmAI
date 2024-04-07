@@ -37,7 +37,7 @@ const viemWalletClient = createWalletClient({
 
 export async function deployOrgContract(
   org_name: string,
-  reward: number,
+  costPerPrompt: number,
   walletClient: WalletClient
 ) {
   const [account] = await walletClient.getAddresses();
@@ -47,7 +47,7 @@ export async function deployOrgContract(
     account,
     args: [
       org_name,
-      parseUnits(String(reward), 18),
+      parseUnits(String(costPerPrompt), 18),
       Token_contractData.contractAddress,
     ],
     chain: filecoinCalibration,
@@ -79,4 +79,89 @@ export async function tokenbalance(address: `0x${string}`) {
     args: [address],
   })) as string;
   return formatUnits(BigInt(balance), 18);
+}
+
+export async function contract_trainModel(
+  contractAddress: `0x${string}`,
+  walletClient: WalletClient
+) {
+  const hash = await walletClient.writeContract({
+    address: contractAddress,
+    abi: Org_contractData.abi,
+    functionName: "trainModel",
+    chain: filecoinCalibration,
+    account: walletClient.account?.address as `0x${string}`,
+  });
+
+  const receipt = await publicClient.waitForTransactionReceipt({ hash });
+  return receipt.transactionHash;
+}
+
+export async function mint_100_token(address: `0x${string}`) {
+  const hash = await viemWalletClient.writeContract({
+    address: Token_contractData.contractAddress as `0x${string}`,
+    abi: Token_contractData.abi,
+    functionName: "mint",
+    args: [address, parseUnits("100", 18)],
+  });
+  const receipt = await publicClient.waitForTransactionReceipt({ hash });
+  return receipt.transactionHash;
+}
+
+export async function getPromptCredits(
+  contractAddress: `0x${string}`,
+  walletClient: WalletClient,
+  amount: number
+) {
+  const hash = await walletClient.writeContract({
+    address: contractAddress,
+    abi: Org_contractData.abi,
+    functionName: "getPromptCredit",
+    args: [amount],
+    chain: filecoinCalibration,
+    account: walletClient.account?.address as `0x${string}`,
+  });
+
+  const receipt = await publicClient.waitForTransactionReceipt({ hash });
+  return receipt.transactionHash;
+}
+
+export async function allowContract(
+  contractAddress: `0x${string}`,
+  walletClient: WalletClient
+) {
+  const hash = await walletClient.writeContract({
+    address: Token_contractData.contractAddress as `0x${string}`,
+    abi: Token_contractData.abi,
+    functionName: "approve",
+    args: [contractAddress, parseUnits("100", 18)],
+    chain: filecoinCalibration,
+    account: walletClient.account?.address as `0x${string}`,
+  });
+
+  const receipt = await publicClient.waitForTransactionReceipt({ hash });
+  return receipt.transactionHash;
+}
+
+export async function getUserCredits(
+  address: `0x${string}`,
+  contractAddress: `0x${string}`
+) {
+  const credits = await publicClient.readContract({
+    address: contractAddress,
+    abi: Org_contractData.abi,
+    functionName: "credits",
+    args: [address],
+  });
+  return credits;
+}
+
+
+export async function getCPP(contractAddress: `0x${string}`){
+  const cpp = await publicClient.readContract({
+    address: contractAddress,
+    abi:Org_contractData.abi,
+    functionName:'cost_per_prompt'
+  }) as bigint;
+  return formatUnits(cpp, 18);
 }

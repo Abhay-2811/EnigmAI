@@ -38,6 +38,10 @@ const Upload = () => {
     return (
       <div className="flex flex-col items-center justify-center align-middle">
         <CircularProgress size={"lg"} aria-label="Loading..." />
+        <p className="w-max-[50%] text-center mt-5">
+          Note: New users have to wait few minutes before they can upload data,
+          as upadting and syncing tableland tables takes time
+        </p>
       </div>
     );
   }

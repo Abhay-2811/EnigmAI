@@ -22,14 +22,15 @@ export const createTable = async (tableName: string, fields: string) => {
 export const addOrg = async (data: org) => {
   const { meta: insert } = await db
     .prepare(
-      `INSERT INTO org_314159_818 (org_name, org_add, description, isTrained, contributors) VALUES (?, ?, ?, ?, ?);`
+      `INSERT INTO org_314159_818 (org_name, org_add, description, isTrained, contributors, Owner_add) VALUES (?, ?, ?, ?, ?, ?);`
     )
     .bind(
       data.org_name,
       data.org_add,
       data.description,
       Number(data.isTrained),
-      Array(data.contributors).toString()
+      Array(data.contributors).toString(),
+      data.Owner_add
     )
     .run();
   const hash = insert.txn!.transactionHash as `0x${string}`;
@@ -72,7 +73,6 @@ export const getCid = async (address: `0x${string}`) => {
 export const updateCids = async (address: `0x${string}`, newCids: string[]) => {
   const prevCid = await getCid(address);
   const data = [...prevCid, ...newCids];
-  console.log(data);
   const { meta: update } = await db
     .prepare("UPDATE Contributors_314159_830 SET cids=? WHERE address=?")
     .bind(data.toString(), address)
@@ -81,6 +81,31 @@ export const updateCids = async (address: `0x${string}`, newCids: string[]) => {
   await publicClient.waitForTransactionReceipt({ hash });
   console.log("Updated Cids");
 };
+
+export const getModelFilter = async (filter: string) => {
+  const { results } = await db
+    .prepare(`SELECT * FROM org_314159_818 WHERE ${filter}`)
+    .run();
+  return results as org[];
+};
+
+export const updateIsTrained = async (org_address: `0x${string}`) => {
+  const { meta: update } = await db
+    .prepare("UPDATE org_314159_818 SET isTrained=? WHERE org_add=?")
+    .bind(1, org_address)
+    .run();
+  const hash = update.txn!.transactionHash as `0x${string}`;
+  await publicClient.waitForTransactionReceipt({ hash });
+  console.log("Updated isTrained");
+};
+
+export const getOrgData = async (): Promise<org[]> => {
+  const { results } = (await db
+    .prepare(`SELECT * FROM org_314159_818`)
+    .run()) as { results: org[] };
+  return results;
+};
+
 /* 
 dao data (dao_data_314159_337 ): 
 id integer primary key, org_name text, owner_add text, description text,reward integer, pages integer, contract_add text

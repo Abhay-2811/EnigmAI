@@ -1,11 +1,24 @@
 "use client";
-import React, { useState } from "react";
+
+import React, { useEffect, useState } from "react";
 import type { org } from "@/types/globalTypes.types";
 import CreateModelForm from "@/components/CreateModelForm";
-
+import { useAccount } from "wagmi";
+import { getModelFilter } from "@/utils/tableland";
+import UploadCard from "@/components/UploadCard";
+import OrgCard from "@/components/Orgcard";
 const MyModels = () => {
   const [toggleCreate, setToggleCreate] = useState<Boolean>(false);
+  const { address } = useAccount();
+  const [orgData, setOrgData] = useState<org[]>();
 
+  useEffect(() => {
+    const getData = async () => {
+      const results: org[] = await getModelFilter(`Owner_add='${address}'`);
+      setOrgData(results);
+    };
+    getData();
+  }, [address]);
   if (toggleCreate) {
     return (
       <div>
@@ -14,7 +27,10 @@ const MyModels = () => {
     );
   }
   return (
-    <div className="grid grid-cols-4 gap-4">
+    <div className="grid grid-cols-3 gap-6">
+      {orgData?.map((data, index) => (
+        <OrgCard org_data={data} key={index} type={'models'}/>
+      ))}
       <div
         className=" flex flex-col h-auto border border-green-500 rounded-md p-5 cursor-pointer justify-center items-center space-y-5"
         onClick={() => setToggleCreate((oldSt) => !oldSt)}

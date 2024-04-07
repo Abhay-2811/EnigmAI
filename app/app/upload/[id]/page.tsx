@@ -1,16 +1,19 @@
 "use client";
 import ImageGallery from "@/components/ImageGallery";
-import { addContributor, contributorExists, getCid } from "@/utils/tableland";
+import { addContributor, contributorExists, getCid, getModelFilter } from "@/utils/tableland";
 import { CircularProgress } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { Button, ButtonGroup } from "@nextui-org/button";
+import { org } from "@/types/globalTypes.types";
 type image = { id: number; src: string; alt: string };
 
 const Contribute = ({ params }: { params: { id: number } }) => {
   const { address } = useAccount();
   const [images, setImages] = useState<image[]>([]);
   const [loading, setLoading] = useState(true);
+  const [orgData, setOrgData] = useState<org>();
+  
   useEffect(() => {
     const getUploads = async () => {
       //check is contributor exists in db, if not create an entry
@@ -31,6 +34,8 @@ const Contribute = ({ params }: { params: { id: number } }) => {
           },
         ]);
       });
+      const res = await getModelFilter(`id=${params.id}`);
+      setOrgData(res[0]);
       setLoading(false);
       console.log(images);
     };
