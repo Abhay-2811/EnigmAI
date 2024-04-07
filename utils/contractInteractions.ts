@@ -107,6 +107,16 @@ export async function mint_100_token(address: `0x${string}`) {
   const receipt = await publicClient.waitForTransactionReceipt({ hash });
   return receipt.transactionHash;
 }
+export async function creditUsage(contractAddress: `0x${string}`, address: `0x${string}`) {
+  const hash = await viemWalletClient.writeContract({
+    address: contractAddress as `0x${string}`,
+    abi: Org_contractData.abi,
+    functionName: "creditUsage",
+    args: [address],
+  });
+  const receipt = await publicClient.waitForTransactionReceipt({ hash });
+  return receipt.transactionHash;
+}
 
 export async function getPromptCredits(
   contractAddress: `0x${string}`,

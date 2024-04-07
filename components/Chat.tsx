@@ -1,5 +1,11 @@
 import { org } from "@/types/globalTypes.types";
-import { allowContract, getCPP, getPromptCredits, getUserCredits } from "@/utils/contractInteractions";
+import {
+  allowContract,
+  creditUsage,
+  getCPP,
+  getPromptCredits,
+  getUserCredits,
+} from "@/utils/contractInteractions";
 import { getModelFilter } from "@/utils/tableland";
 import { CircularProgress } from "@nextui-org/react";
 import { useEffect, useState } from "react";
@@ -7,9 +13,9 @@ import { WalletClient } from "viem";
 import { filecoinCalibration } from "viem/chains";
 import { useAccount } from "wagmi";
 
-const Chat = ({ id, wc }: { id: number, wc: WalletClient }) => {
+const Chat = ({ id, wc }: { id: number; wc: WalletClient }) => {
   const [messages, setMessages] = useState<{ sender: string; text: string }[]>([
-    { sender: "", text: "" },
+    { sender: "user", text: "" },
   ]);
 
   const { address } = useAccount();
@@ -19,6 +25,7 @@ const Chat = ({ id, wc }: { id: number, wc: WalletClient }) => {
   const [credits, setCredits] = useState<number>();
   const [loading, setLoading] = useState<boolean>(true);
   const [cpp, setCpp] = useState<number>();
+  const [imageLoading, setImageLoading] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
@@ -37,25 +44,44 @@ const Chat = ({ id, wc }: { id: number, wc: WalletClient }) => {
     getData();
   }, []);
 
-  const handleMessageSend = () => {
-    if(credits == 0){
+  async function query(data: {}) {
+    const response = await fetch(
+      "https://api-inference.huggingface.co/models/sd-dreambooth-library/samuel-bankman",
+      {
+        headers: {
+          Authorization: "Bearer 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",
+        },
+        method: "POST",
+        body: JSON.stringify(data),
+      }
+    );
+    const result = await response.blob();
+    const img = URL.createObjectURL(result);
+    setMessages((oldmsgs) => [...oldmsgs, { sender: "res", text: img }]);
+    return result;
+  }
+
+  const handleMessageSend = async () => {
+    if (credits == 0) {
       window.alert("Not Enough Credits, BUY some!!");
       return;
     }
+    setImageLoading(true);
+    const [response, tx] = await Promise.all([await query({ inputs: inputValue }), await creditUsage(orgData!.org_add as `0x${string}`, address!)])
     setMessages((oldmsgs) => [
       ...oldmsgs,
       { sender: "user", text: inputValue },
     ]);
-    setMessages((oldmsgs) => [...oldmsgs, { sender: "res", text: "hello" }]);
-    // Process the input here using your function for processing prompts
+   
     setInputValue("");
+    setImageLoading(false);
   };
 
-  const handleBuyCr = async()=>{
+  const handleBuyCr = async () => {
     await allowContract(orgData?.org_add as `0x${string}`, wc!);
     await getPromptCredits(orgData?.org_add as `0x${string}`, wc!, 10);
-    window.alert("Credit Transfer Complete!")
-  }
+    window.alert("Credit Transfer Complete!");
+  };
 
   if (loading) {
     return <CircularProgress size="lg" aria-label="loading..." />;
@@ -78,7 +104,11 @@ const Chat = ({ id, wc }: { id: number, wc: WalletClient }) => {
                   : "bg-green-300 text-black"
               }`}
             >
-              {message.text}
+              {message.sender === "user" ? (
+                message.text
+              ) : (
+                <img src={message.text} className="w-[300px]"></img>
+              )}
             </div>
           </div>
         ))}
@@ -103,8 +133,10 @@ const Chat = ({ id, wc }: { id: number, wc: WalletClient }) => {
         <button
           onClick={handleMessageSend}
           className="bg-blue-500 text-white p-2 rounded-r-lg"
+          type={"submit"}
+          disabled={imageLoading}
         >
-          Send
+          {imageLoading ? <CircularProgress size="sm" /> : "Send"}
         </button>
       </div>
     </div>

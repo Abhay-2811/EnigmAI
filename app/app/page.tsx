@@ -2,7 +2,7 @@
 
 import OrgCard from "@/components/Orgcard";
 import React, { useEffect, useState } from "react";
-import { org_data, type org } from "@/types/globalTypes.types";
+import { type org } from "@/types/globalTypes.types";
 import { getOrgData } from "@/utils/tableland";
 
 

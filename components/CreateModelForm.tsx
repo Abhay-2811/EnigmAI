@@ -30,7 +30,7 @@ const CreateModelForm = ({wc}:{wc: WalletClient}) => {
     org_name: "",
     description: "",
     isTrained: 0,
-    contributors: [],
+    contributors: '',
     costPerPrompt: 0,
     Owner_add: ''
   });
@@ -61,7 +61,7 @@ const CreateModelForm = ({wc}:{wc: WalletClient}) => {
       org_add: deployedAddress!,
       description: formData.description,
       isTrained: 0,
-      contributors: [],
+      contributors: '',
       costPerPrompt: formData.costPerPrompt,
       Owner_add: address!
     });

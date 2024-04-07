@@ -82,6 +82,20 @@ export const updateCids = async (address: `0x${string}`, newCids: string[]) => {
   console.log("Updated Cids");
 };
 
+
+export const updateContributions = async (id: number, newCids: string[]) => {
+  const orgData = await getModelFilter(`id=${id}`);
+  const data = [...orgData[0].contributors, ...newCids];
+  const { meta: update } = await db
+    .prepare("UPDATE org_314159_818 SET contributors=? WHERE id=?")
+    .bind(data.toString(), id)
+    .run();
+  const hash = update.txn!.transactionHash as `0x${string}`;
+  await publicClient.waitForTransactionReceipt({ hash });
+  console.log("Updated COntributions");
+};
+
+
 export const getModelFilter = async (filter: string) => {
   const { results } = await db
     .prepare(`SELECT * FROM org_314159_818 WHERE ${filter}`)
@@ -92,7 +106,7 @@ export const getModelFilter = async (filter: string) => {
 export const updateIsTrained = async (org_address: `0x${string}`) => {
   const { meta: update } = await db
     .prepare("UPDATE org_314159_818 SET isTrained=? WHERE org_add=?")
-    .bind(1, org_address)
+    .bind(2, org_address)
     .run();
   const hash = update.txn!.transactionHash as `0x${string}`;
   await publicClient.waitForTransactionReceipt({ hash });
