@@ -5,26 +5,19 @@ import { Select, SelectSection, SelectItem } from "@nextui-org/select";
 import { org } from "@/types/globalTypes.types";
 import { addOrg, createTable } from "@/utils/tableland";
 import { WalletClient } from "viem";
-import { useAccount, useWalletClient } from "wagmi";
+import { useAccount } from "wagmi";
 import { filecoinCalibration } from "viem/chains";
 import { deployOrgContract } from "@/utils/contractInteractions";
 import { CircularProgress } from "@nextui-org/progress";
 
 const model_options = ["Stable Diffusion Dreambooth"];
 
-const CreateModelForm = () => {
+const CreateModelForm = ({wc}:{wc: WalletClient}) => {
   const [radioSelect, setRadioSelect] = useState<Boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const {address} = useAccount();
-  let wc: WalletClient | undefined;
 
-  if (typeof window !== "undefined") {
-    const { data: walletClient } = useWalletClient({
-      chainId: filecoinCalibration.id,
-    });
-    wc = walletClient;
-  }
   const onSelectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
     if (e.target.value == "pre-trained") {

@@ -5,9 +5,9 @@ import { CircularProgress } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { WalletClient } from "viem";
 import { filecoinCalibration } from "viem/chains";
-import { useAccount, useWalletClient } from "wagmi";
+import { useAccount } from "wagmi";
 
-const Chat = ({ id }: { id: number }) => {
+const Chat = ({ id, wc }: { id: number, wc: WalletClient }) => {
   const [messages, setMessages] = useState<{ sender: string; text: string }[]>([
     { sender: "", text: "" },
   ]);
@@ -19,15 +19,6 @@ const Chat = ({ id }: { id: number }) => {
   const [credits, setCredits] = useState<number>();
   const [loading, setLoading] = useState<boolean>(true);
   const [cpp, setCpp] = useState<number>();
-
-  let wc: WalletClient | undefined;
-
-  if (typeof window !== "undefined") {
-    const { data: walletClient } = useWalletClient({
-      chainId: filecoinCalibration.id,
-    });
-    wc = walletClient;
-  }
 
   useEffect(() => {
     const getData = async () => {

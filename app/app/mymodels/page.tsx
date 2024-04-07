@@ -3,10 +3,12 @@
 import React, { useEffect, useState } from "react";
 import type { org } from "@/types/globalTypes.types";
 import CreateModelForm from "@/components/CreateModelForm";
-import { useAccount } from "wagmi";
+import { useAccount, useWalletClient } from "wagmi";
 import { getModelFilter } from "@/utils/tableland";
 import UploadCard from "@/components/UploadCard";
 import OrgCard from "@/components/Orgcard";
+import { WalletClient } from "viem";
+import { filecoinCalibration } from "viem/chains";
 const MyModels = () => {
   const [toggleCreate, setToggleCreate] = useState<Boolean>(false);
   const { address } = useAccount();
@@ -19,17 +21,21 @@ const MyModels = () => {
     };
     getData();
   }, [address]);
+
+  const { data: wc } = useWalletClient({
+    chainId: filecoinCalibration.id,
+  });
   if (toggleCreate) {
     return (
       <div>
-        <CreateModelForm />
+        <CreateModelForm wc={wc!}/>
       </div>
     );
   }
   return (
     <div className="grid grid-cols-3 gap-6">
       {orgData?.map((data, index) => (
-        <OrgCard org_data={data} key={index} type={'models'}/>
+        <OrgCard org_data={data} key={index} type={'models'} wc={wc!}/>
       ))}
       <div
         className=" flex flex-col h-auto border border-green-500 rounded-md p-5 cursor-pointer justify-center items-center space-y-5"

@@ -40,7 +40,7 @@ const Contribute = ({ params }: { params: { id: number } }) => {
       console.log(images);
     };
     getUploads();
-  }, [address]);
+  }, [address, params.id]);
 
   const commitData = async()=>{
     

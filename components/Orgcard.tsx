@@ -2,7 +2,6 @@ import React from "react";
 import type { org } from "@/types/globalTypes.types";
 import Link from "next/link";
 import { contract_trainModel } from "@/utils/contractInteractions";
-import { useWalletClient } from "wagmi";
 import { filecoinCalibration } from "viem/chains";
 import { WalletClient } from "viem";
 import { updateIsTrained } from "@/utils/tableland";
@@ -10,15 +9,9 @@ import Image from "next/image";
 const OrgCard: React.FC<{
   org_data: org;
   type: "upload" | "models" | "chat";
-}> = ({ org_data, type }) => {
-  let wc: WalletClient | undefined;
+  wc?: WalletClient
+}> = ({ org_data, type, wc }) => {
 
-  if (typeof window !== "undefined") {
-    const { data: walletClient } = useWalletClient({
-      chainId: filecoinCalibration.id,
-    });
-    wc = walletClient;
-  }
   const trainModel = async () => {
     console.log("Train Model");
     // call contract function

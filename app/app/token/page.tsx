@@ -4,7 +4,7 @@ import { Button, CircularProgress } from "@nextui-org/react";
 import React, { useState } from "react";
 import { useAccount } from "wagmi";
 
-const page = () => {
+const Page = () => {
   const { address } = useAccount();
   const [status, setStatus] = useState<"mint" | "loading" | "success">("mint");
   const [hash, setHash] = useState<string | undefined>();
@@ -45,4 +45,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
